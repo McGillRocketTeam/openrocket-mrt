@@ -197,7 +197,8 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 					if (nextEvent != null) {
 						maxStepTime = MathUtil.max(nextEvent.getTime() - currentStatus.getSimulationTime(), 0.001);
 					} else if (currentStatus.isLanded()) {
-						maxStepTime = 0.0;
+						// for running real-time sim
+						maxStepTime = 0.5;
 					}
 
 					if (maxStepTime > MathUtil.EPSILON) {
@@ -304,8 +305,14 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 				}
 
 				// If I'm on the ground and have no events in the queue, I'm done
-				if (currentStatus.isLanded() && currentStatus.getEventQueue().isEmpty())
-					currentStatus.addEvent(new FlightEvent(FlightEvent.Type.SIMULATION_END, currentStatus.getSimulationTime()));
+//				if (currentStatus.isLanded() && currentStatus.getEventQueue().isEmpty())
+//					currentStatus.addEvent(new FlightEvent(FlightEvent.Type.SIMULATION_END, currentStatus.getSimulationTime()));
+				// generate SIMULATION_END event by sim listener instead of engine
+				if (currentStatus.isLanded()) {
+					currentStatus.addEvent(new FlightEvent(FlightEvent.Type.ALTITUDE, currentStatus.getSimulationTime(),
+							currentStatus.getConfiguration().getRocket(),
+							new Pair<Double, Double>(oldAlt, currentStatus.getRocketPosition().z)));
+				}
 
 				previousSimulationTime = currentStatus.getSimulationTime();
 			}
@@ -589,12 +596,12 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 
 					// If we haven't already reached apogee, then we need to compute the actual coast time
 					// to determine the optimum altitude.
-					if (!currentStatus.isApogeeReached()) {
-						FlightData coastStatus = computeCoastTime();
-
-							currentStatus.getFlightDataBranch().setOptimumAltitude(coastStatus.getMaxAltitude());
-							currentStatus.getFlightDataBranch().setTimeToOptimumAltitude(coastStatus.getTimeToApogee());
-						}
+//					if (!currentStatus.isApogeeReached()) {
+//						FlightData coastStatus = computeCoastTime();
+//
+//							currentStatus.getFlightDataBranch().setOptimumAltitude(coastStatus.getMaxAltitude());
+//							currentStatus.getFlightDataBranch().setTimeToOptimumAltitude(coastStatus.getTimeToApogee());
+//						}
 
 					// switch to landing stepper (unless we're already on the ground)
 					if (!currentStatus.isLanded()) {

@@ -166,6 +166,15 @@ public class RK4SimulationStepper extends AbstractSimulationStepper {
 
 		log.trace("Selected time step " + store.timeStep + " (limiting factor " + limitingValue + ")");
 
+		/* let the code here calculate the best "large" time step. MIN_TIME_STEP is set to achieve the
+		 * desired HIL platform data update rate, so choose the minimum value between store.timeStep and
+		 * MIN_TIME_STEP.
+		 */
+		store.timeStep = Math.min(store.timeStep, MIN_TIME_STEP);
+		log.trace("Selected time step " + store.timeStep + " (limiting factor " + limitingValue + ")");
+
+		/*  code below is commented out and replaced to ensure that time step is small enough to
+		 *  achieve the desired update rate for the HIL platform.
 		// If our selected time step is too close to our next scheduled event,
 		// (passed in as maxTimeStep) adjust
 		double minTimeStep = status.getSimulationConditions().getTimeStep() / 20;
@@ -182,6 +191,7 @@ public class RK4SimulationStepper extends AbstractSimulationStepper {
 					minTimeStep + " instead.");
 			store.timeStep = minTimeStep;
 		}
+		*/
 
 		// TODO: MEDIUM: Store acceleration etc of entire RK4 step, store should be cloned or something...
 		store.storeData(status);
@@ -229,7 +239,9 @@ public class RK4SimulationStepper extends AbstractSimulationStepper {
 		deltaP = k2.v.add(k3.v).multiply(2).add(k1.v).add(k4.v).multiply(store.timeStep / 6);
 		deltaR = k2.ra.add(k3.ra).multiply(2).add(k1.ra).add(k4.ra).multiply(store.timeStep / 6);
 		deltaO = k2.rv.add(k3.rv).multiply(2).add(k1.rv).add(k4.rv).multiply(store.timeStep / 6);
-		
+
+		// ensure getRocketAcceleration() will have correct accel value
+		status.setRocketAcceleration(k4.a);
 
 		status.setRocketVelocity(status.getRocketVelocity().add(deltaV));
 		status.setRocketPosition(status.getRocketPosition().add(deltaP));

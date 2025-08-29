@@ -19,7 +19,8 @@ public abstract class AbstractEulerStepper extends AbstractSimulationStepper {
 	private static final Logger log = LoggerFactory.getLogger(AbstractEulerStepper.class);
 	private static final Translator trans = Application.getTranslator();
 
-	private static final double RECOVERY_TIME_STEP = 0.5;
+	// for running real-time sim
+	private static final double RECOVERY_TIME_STEP = 0.01;
 
 	DataStore store = new DataStore();
 	

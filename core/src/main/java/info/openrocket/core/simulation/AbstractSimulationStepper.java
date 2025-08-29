@@ -22,7 +22,8 @@ import info.openrocket.core.util.Rotation2D;
 public abstract class AbstractSimulationStepper implements SimulationStepper {
 	private static final Logger log = LoggerFactory.getLogger(AbstractSimulationStepper.class);
 
-	protected static final double MIN_TIME_STEP = 0.001;
+	// for running real-time sim
+	protected static final double MIN_TIME_STEP = 0.01;
 	
 	/*
 	 * calculate acceleration at a given point in time

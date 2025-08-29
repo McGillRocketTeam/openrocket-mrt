@@ -409,7 +409,8 @@ public class UnitGroup {
 		UNITS_IMPULSE.setDefaultUnit("Ns");
 		UNITS_TIME_STEP.setDefaultUnit("s");
 		UNITS_LONG_TIME.setDefaultUnit("s");
-		UNITS_ROLL.setDefaultUnit("r/s");
+//		UNITS_ROLL.setDefaultUnit("r/s");
+		UNITS_ROLL.setDefaultUnit(DEGREE + "/s");
 		UNITS_TEMPERATURE.setDefaultUnit(DEGREE + "C");
 		UNITS_WINDSPEED.setDefaultUnit("m/s");
 		UNITS_LATITUDE.setDefaultUnit(DEGREE + " " + trans.get("CompassRose.lbl.north"));
@@ -439,7 +440,8 @@ public class UnitGroup {
 		UNITS_IMPULSE.setDefaultUnit("Ns");
 		UNITS_TIME_STEP.setDefaultUnit("s");
 		UNITS_LONG_TIME.setDefaultUnit("s");
-		UNITS_ROLL.setDefaultUnit("r/s");
+//		UNITS_ROLL.setDefaultUnit("r/s");
+		UNITS_ROLL.setDefaultUnit(DEGREE + "/s");
 		UNITS_TEMPERATURE.setDefaultUnit(DEGREE + "F");
 		UNITS_WINDSPEED.setDefaultUnit("mph");
 		UNITS_LATITUDE.setDefaultUnit(DEGREE + " " + trans.get("CompassRose.lbl.north"));
