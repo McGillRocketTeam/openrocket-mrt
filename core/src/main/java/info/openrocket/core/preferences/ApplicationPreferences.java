@@ -2,6 +2,7 @@ package info.openrocket.core.preferences;
 
 import java.awt.Color;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -175,6 +176,13 @@ public abstract class ApplicationPreferences implements ChangeSource, ORPreferen
 	// SVG export options
 	public static final String SVG_STROKE_COLOR = "SVGStrokeColor";
 	public static final String SVG_STROKE_WIDTH = "SVGStrokeWidth";
+
+	// MRT custom constants
+	private static final String EXTERNAL_MOTORS_PATH = Path.of(System.getProperty("user.dir"),
+			"hil", "src", "main", "resources", "motors"
+	).toAbsolutePath().toString();
+	private static final File EXTERNAL_MOTORS_DIR = new File(EXTERNAL_MOTORS_PATH);
+	private static final boolean EXISTS_EXTERNAL_MOTORS_DIR = EXTERNAL_MOTORS_DIR.exists() && EXTERNAL_MOTORS_DIR.isDirectory();
 	
 	private static final AtmosphericModel ISA_ATMOSPHERIC_MODEL = new ExtendedISAModel();
 
@@ -1139,9 +1147,14 @@ public abstract class ApplicationPreferences implements ChangeSource, ORPreferen
 		List<File> list = new ArrayList<>();
 
 		String files = getString(USER_THRUST_CURVES_KEY, null);
-		if (files == null) {
+
+		// if the external motors dir exists, use this instead of default and user OR settings
+		// so that user doesn't need to download motor files locally (rely on the external dir)
+		if (EXISTS_EXTERNAL_MOTORS_DIR || files == null) {
 			// Default to application directory
-			File tcdir = getDefaultUserThrustCurveFile();
+			File tcdir = EXISTS_EXTERNAL_MOTORS_DIR ? EXTERNAL_MOTORS_DIR
+					: getDefaultUserThrustCurveFile();
+
 			if (!tcdir.isDirectory()) {
 				tcdir.mkdirs();
 			}
