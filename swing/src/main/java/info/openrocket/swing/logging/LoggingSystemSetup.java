@@ -38,7 +38,7 @@ public class LoggingSystemSetup {
 
 	public static void setupLoggingAppender(Logger logger) {
 		logger.detachAndStopAllAppenders();
-		logger.setLevel(Level.TRACE);
+		logger.setLevel(Level.INFO);
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		LogbackBufferLoggerAdaptor appender = new LogbackBufferLoggerAdaptor();
 		appender.setName("buffer");
