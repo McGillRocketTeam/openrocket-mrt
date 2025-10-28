@@ -575,11 +575,12 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 					// TODO: HIGH: Check stage activeness for other events as well?
 
 					// Check whether any motor in the active stages is active anymore
-					for (MotorClusterState state : currentStatus.getActiveMotors() ) {
-						if (state.getThrust(currentStatus.getSimulationTime()) > MathUtil.EPSILON) {
-							currentStatus.abortSimulation(SimulationAbort.Cause.DEPLOY_UNDER_THRUST);
-						}
-					}
+					// causes simulation to abort if recovery devices are deployed before apogee
+//					for (MotorClusterState state : currentStatus.getActiveMotors() ) {
+//						if (state.getThrust(currentStatus.getSimulationTime()) > MathUtil.EPSILON) {
+//							currentStatus.abortSimulation(SimulationAbort.Cause.DEPLOY_UNDER_THRUST);
+//						}
+//					}
 
 					// Check for launch rod
 					if (!currentStatus.isLaunchRodCleared()) {
